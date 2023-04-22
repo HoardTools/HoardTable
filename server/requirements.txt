@@ -1,0 +1,5 @@
+starlite
+pymongo
+uvicorn
+starlette
+python-dotenv
