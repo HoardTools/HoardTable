@@ -1,7 +1,8 @@
 from pymongo.collection import Collection
 from pymongo.database import Database
+from secrets import token_urlsafe
 
-EXCLUDE_UNIVERSAL = ["collection"]
+EXCLUDE_UNIVERSAL = ["collection", "db"]
 
 
 class ORM:
@@ -9,12 +10,13 @@ class ORM:
     collection_name: str = None
     exclude: list[str] = []
 
-    def __init__(self, id: str = "", db: Database = None) -> None:
-        self.id = id
+    def __init__(self, id: str = None, db: Database = None) -> None:
+        self.id = id if id != None else token_urlsafe(16)
         if db and self.collection_name:
             self.collection: Collection = db[self.collection_name]
         else:
             self.collection: Collection = None
+        self.db = db
 
     def _iter_nested_list(self, lst: list):
         result = []
@@ -72,3 +74,7 @@ class ORM:
         if not self.collection:
             raise RuntimeError("No database specified")
         self.collection.replace_one({"id": self.id}, self.as_dict, upsert=True)
+
+    @classmethod
+    def create(cls, db: Database):
+        raise NotImplementedError("Cannot create() ORM")
