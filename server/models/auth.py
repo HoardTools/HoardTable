@@ -21,6 +21,7 @@ class Session(ORM):
         db: Database = None,
         user_id: Union[None, str] = None,
         expires: float = 0,
+        **kwargs
     ) -> None:
         super().__init__(id, db)
         self.user_id = user_id
@@ -69,6 +70,7 @@ class User(ORM):
         username: str = "User",
         password_hash: str = None,
         profile_picture: str = None,
+        **kwargs
     ) -> None:
         super().__init__(id, db)
         self.username = username

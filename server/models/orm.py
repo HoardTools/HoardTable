@@ -10,9 +10,9 @@ class ORM:
     collection_name: str = None
     exclude: list[str] = []
 
-    def __init__(self, id: str = None, db: Database = None) -> None:
+    def __init__(self, id: str = None, db: Database = None, **kwargs) -> None:
         self.id = id if id != None else token_urlsafe(16)
-        if db and self.collection_name:
+        if db != None and self.collection_name:
             self.collection: Collection = db[self.collection_name]
         else:
             self.collection: Collection = None
@@ -25,7 +25,7 @@ class ORM:
                 result.append(self._iter_nested_list(i))
             elif type(i) == dict:
                 result.append(self._iter_nested_dict(i))
-            elif issubclass(i, ORM):
+            elif isinstance(i, ORM):
                 result.append(i.as_dict)
             else:
                 result.append(i)
@@ -38,7 +38,7 @@ class ORM:
                 result[k] = self._iter_nested_list(v)
             elif type(v) == dict:
                 result[k] = self._iter_nested_dict(v)
-            elif issubclass(v, ORM):
+            elif isinstance(v, ORM):
                 result[k] = v.as_dict
             else:
                 result[k] = v
@@ -71,7 +71,7 @@ class ORM:
         return None
 
     def save(self):
-        if not self.collection:
+        if self.collection == None:
             raise RuntimeError("No database specified")
         self.collection.replace_one({"id": self.id}, self.as_dict, upsert=True)
 

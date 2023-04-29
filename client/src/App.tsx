@@ -9,6 +9,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./app.scss";
 import * as translate_en from "./localization/en.json";
 import { LayoutComponent } from "./pages/layout";
+import { ApiProvider } from "./util/api";
 
 i18n.use(initReactI18next).init({
     // the translations
@@ -75,9 +76,11 @@ function RouterContainer() {
 function App() {
     return (
         <div className="app-container">
-            <MantineSetup>
-                <RouterContainer />
-            </MantineSetup>
+            <ApiProvider>
+                <MantineSetup>
+                    <RouterContainer />
+                </MantineSetup>
+            </ApiProvider>
         </div>
     );
 }
