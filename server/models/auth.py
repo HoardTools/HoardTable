@@ -1,4 +1,4 @@
-from orm import ORM
+from .orm import ORM
 from pymongo.database import Database
 from typing import Union
 from time import time
