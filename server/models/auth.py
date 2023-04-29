@@ -3,12 +3,12 @@ from pymongo.database import Database
 from typing import Union
 from time import time
 from hashlib import pbkdf2_hmac as hmac
+import os
 
 SESSION_EXPIRE = 3600 * 96
 
-# REPLACE LATER
-SALT = b"A bad salt dont use"
-ITER = 750000
+SALT = os.environ.get("CRYPT_SALT", "ough salty").encode("utf-8")
+ITER = int(os.environ.get("CRYPT_ITERATIONS", "500000"))
 
 
 class Session(ORM):
