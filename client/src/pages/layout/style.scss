@@ -1,0 +1,23 @@
+.app-header {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+    .app-logo {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        display: inline-block;
+        height: 32px;
+        width: auto;
+    }
+
+    .app-name {
+        position: absolute;
+        top: calc(50% - 2px);
+        left: 56px;
+        transform: translate(0, -50%);
+        font-weight: 400;
+    }
+}

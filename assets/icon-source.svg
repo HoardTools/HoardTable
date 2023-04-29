@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 135.46666 135.46667"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="icon-source.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.829812"
+     inkscape:cx="205.75884"
+     inkscape:cy="194.82876"
+     inkscape:window-width="2560"
+     inkscape:window-height="1398"
+     inkscape:window-x="1080"
+     inkscape:window-y="480"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect6907"
+       is_visible="true"
+       lpeversion="1" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       fill="none"
+       d="M 19.268926,15.197153 H 153.36384 V 139.70613 H 19.268926 Z"
+       id="path2864"
+       style="stroke-width:5.38387" />
+    <path
+       d="M 127.70846,4.2343163 126.58044,4.4449833 88.902934,19.049882 46.568797,4.2333333 6.7747123,17.638772 c -1.482695,0.493863 -2.541379,1.763987 -2.541379,3.386642 V 127.70458 c 0,1.97545 1.55203,3.52775 3.527797,3.52775 l 1.128023,-0.21066 37.6772457,-14.60487 42.334135,14.81654 39.794076,-13.40544 c 1.48269,-0.49387 2.53872,-1.76398 2.53872,-3.38664 V 7.7621013 c 0,-1.975449 -1.55203,-3.527759 -3.5278,-3.527759 z M 88.902124,117.12231 46.567995,102.2352 V 18.345326 l 42.334129,14.887085 z"
+       id="path2866"
+       style="stroke-width:0;fill:#ffffff;stroke-dasharray:none" />
+    <path
+       style="fill:none;fill-opacity:1;stroke-width:0;stroke-dasharray:none"
+       d="m 61.145358,98.826078 c 0,0 0.238887,-11.872203 0.950606,-12.646845 0.711719,-0.774644 9.617218,-5.451382 9.036328,-9.918658 C 70.551402,71.793298 67.588844,65.300232 66.141403,63.369351 64.693961,61.438469 57.28709,54.205004 57.173031,51.538203 57.058972,48.871404 61.91356,38.695132 61.91356,38.695132"
+       id="path6123" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:3.175;stroke-linecap:round;stroke-dasharray:3.17499995,6.3499999;stroke-opacity:1;stroke-dashoffset:0"
+       d="m 63.936844,117.35582 c 4.386357,-3.7832 7.040348,-9.50076 7.098721,-15.29294 0.05838,-5.793124 -2.318238,-11.298123 -4.626398,-16.611887 -2.173355,-5.00342 -4.368711,-10.261987 -3.970034,-15.702459 0.385517,-5.260888 3.359918,-10.270007 7.794517,-13.126561"
+       id="path6905"
+       inkscape:path-effect="#path-effect6907"
+       inkscape:original-d="m 63.936844,117.35582 c 2.366505,-5.09738 4.732745,-10.19503 7.098721,-15.29294 2.365973,-5.097913 -3.084002,-11.074327 -4.626398,-16.611887 -1.5424,-5.537559 -2.646426,-10.468041 -3.970034,-15.702459 -1.32361,-5.234416 5.196607,-8.750777 7.794517,-13.126561" />
+    <path
+       sodipodi:type="star"
+       style="fill:#ffc21a;fill-opacity:1;stroke:#ffc21a;stroke-width:3.175;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       id="path10455"
+       inkscape:flatsided="false"
+       sodipodi:sides="4"
+       sodipodi:cx="64.625221"
+       sodipodi:cy="37.896729"
+       sodipodi:r1="8.0065603"
+       sodipodi:r2="4.0032802"
+       sodipodi:arg1="-2.5022855"
+       sodipodi:arg2="-1.7168873"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 58.199882,33.119698 5.842574,0.816395 5.359796,-2.464704 -0.816395,5.842575 2.464704,5.359795 -5.842575,-0.816395 -5.359795,2.464704 0.816394,-5.842575 z"
+       transform="rotate(-34.86327,90.702048,25.240679)" />
+  </g>
+</svg>
