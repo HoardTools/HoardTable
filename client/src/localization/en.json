@@ -1,5 +1,8 @@
 {
     "layout": {
-        "appName": "HoardTable"
+        "appName": "HoardTable",
+        "auth": {
+            "loginButton": "Login"
+        }
     }
 }

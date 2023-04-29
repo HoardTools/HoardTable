@@ -20,4 +20,11 @@
         transform: translate(0, -50%);
         font-weight: 400;
     }
+
+    .auth-btn {
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        transform: translate(0, -50%);
+    }
 }

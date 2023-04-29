@@ -49,6 +49,7 @@ function MantineSetup(props: {
                     ],
                 },
                 primaryColor: "brand",
+                primaryShade: 6,
                 colorScheme: "dark",
             }}
             withCSSVariables
