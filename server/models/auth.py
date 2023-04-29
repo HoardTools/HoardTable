@@ -39,11 +39,17 @@ class Session(ORM):
         if len(result) == 1:
             if result[0].verify(password):
                 self.user_id = result[0].id
+                self.save()
                 return result[0]
         return None
 
     def logout(self):
         self.user_id = None
+        self.save()
+
+    def refresh(self):
+        self.expires = time() + SESSION_EXPIRE
+        self.save()
 
     @property
     def user(self):

@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 from pymongo import MongoClient
 from models import ApplicationState
+from controllers import *
 
 load_dotenv()
 
@@ -21,5 +22,7 @@ def provide_app_state(state: State) -> ApplicationState:
 
 
 app = Starlite(
-    [], on_startup=[on_start], dependencies={"app_state": Provide(provide_app_state)}
+    [SessionController],
+    on_startup=[on_start],
+    dependencies={"app_state": Provide(provide_app_state)},
 )
