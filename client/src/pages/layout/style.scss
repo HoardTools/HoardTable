@@ -1,43 +1,64 @@
-.app-header {
-    box-sizing: border-box;
+.layout-root {
+    display: inline-block;
     position: absolute;
     top: 0px;
     left: 0px;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 
-    .app-logo {
+    .app-header {
+        box-sizing: border-box;
         position: absolute;
-        top: 8px;
-        left: 8px;
-        display: inline-block;
-        height: 32px;
-        width: auto;
-    }
+        top: 0px;
+        left: 0px;
 
-    .app-name {
-        position: absolute;
-        top: calc(50% - 2px);
-        left: 56px;
-        transform: translate(0, -50%);
-        font-weight: 400;
-    }
-
-    .auth-btn {
-        position: absolute;
-        top: 50%;
-        right: 8px;
-        transform: translate(0, -50%);
-    }
-
-    .user-button {
-        position: absolute;
-        top: 50%;
-        right: 8px;
-        transform: translate(0, -50%);
-        cursor: pointer;
-        transition: filter 0.1s;
-
-        &:hover {
-            filter: brightness(2);
+        .app-logo {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            display: inline-block;
+            height: 32px;
+            width: auto;
         }
+
+        .app-name {
+            position: absolute;
+            top: calc(50% - 2px);
+            left: 56px;
+            transform: translate(0, -50%);
+            font-weight: 400;
+        }
+
+        .auth-btn {
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            transform: translate(0, -50%);
+        }
+
+        .user-button {
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            transform: translate(0, -50%);
+            cursor: pointer;
+            transition: filter 0.1s;
+
+            &:hover {
+                filter: brightness(2);
+            }
+        }
+    }
+
+    .content-root {
+        position: absolute;
+        top: 48px;
+        left: 0px;
+        display: inline-block;
+        width: 100vw;
+        height: calc(100vh - 48px);
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 }
