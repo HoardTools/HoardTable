@@ -48,5 +48,10 @@
             "join": "Join Game",
             "create": "New Game"
         }
+    },
+    "components": {
+        "dropzone": {
+            "title": "Drag files here, or click to select"
+        }
     }
 }
