@@ -78,3 +78,8 @@ class ORM:
     @classmethod
     def create(cls, db: Database):
         raise NotImplementedError("Cannot create() ORM")
+
+    def destroy(self):
+        if self.collection == None:
+            raise RuntimeError("No database specified")
+        self.collection.delete_one({"id": self.id})
