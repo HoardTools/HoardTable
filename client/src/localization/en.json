@@ -19,5 +19,12 @@
                 "switch": "Use Existing Account"
             }
         }
+    },
+    "errors": {
+        "layout": {
+            "createAccount": {
+                "passwordMatch": "Passwords must match."
+            }
+        }
     }
 }

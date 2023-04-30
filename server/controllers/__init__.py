@@ -1,1 +1,1 @@
-from .auth import SessionController
+from .auth import SessionController, UserController

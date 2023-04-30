@@ -82,10 +82,11 @@ class User(ORM):
         return cls(
             db=db,
             username=username,
-            password_hash=hmac("sha256", password.encode("utf-8"), SALT, ITER),
+            password_hash=hmac("sha256", password.encode("utf-8"), SALT, ITER).hex(),
         )
 
     def verify(self, password: str):
         return (
-            hmac("sha256", password.encode("utf-8"), SALT, ITER) == self.password_hash
+            hmac("sha256", password.encode("utf-8"), SALT, ITER).hex()
+            == self.password_hash
         )

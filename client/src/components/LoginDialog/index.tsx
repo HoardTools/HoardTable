@@ -4,6 +4,8 @@ import { Button, Group, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import { MdEmail, MdLock } from "react-icons/md";
 import "./style.scss";
+import { useAPI } from "../../util/api";
+import { UserData } from "../../types/auth";
 
 export function LoginDialog({
     context,
@@ -29,12 +31,14 @@ export function LoginDialog({
                     variant="filled"
                     label={t("layout.auth.formLogin.username")}
                     icon={<MdEmail />}
+                    {...loginForm.getInputProps("username")}
                 />
                 <PasswordInput
                     required
                     variant="filled"
                     label={t("layout.auth.formLogin.password")}
                     icon={<MdLock />}
+                    {...loginForm.getInputProps("password")}
                 />
                 <Group spacing={8} className="actions" position="right">
                     <Button
@@ -65,18 +69,34 @@ export function CreateAccountDialog({
     innerProps,
 }: ContextModalProps<{}>) {
     const { t } = useTranslation();
+    const { post } = useAPI();
     const createForm = useForm({
         initialValues: {
             username: "",
             password: "",
             confirmPassword: "",
         },
+        validate: {
+            confirmPassword: (value, values) =>
+                value === values.password
+                    ? null
+                    : t("errors.layout.createAccount.passwordMatch"),
+        },
     });
 
     return (
         <form
             className="form form-create-account"
-            onSubmit={createForm.onSubmit(console.log)}
+            onSubmit={createForm.onSubmit((values) =>
+                post<UserData>("auth/user/create", {
+                    body: {
+                        username: values.username,
+                        password: values.password,
+                    },
+                }).then((result) => {
+                    console.log(result);
+                })
+            )}
         >
             <Stack spacing={16}>
                 <TextInput
@@ -84,18 +104,21 @@ export function CreateAccountDialog({
                     variant="filled"
                     label={t("layout.auth.formCreateAccount.username")}
                     icon={<MdEmail />}
+                    {...createForm.getInputProps("username")}
                 />
                 <PasswordInput
                     required
                     variant="filled"
                     label={t("layout.auth.formCreateAccount.password")}
                     icon={<MdLock />}
+                    {...createForm.getInputProps("password")}
                 />
                 <PasswordInput
                     required
                     variant="filled"
                     label={t("layout.auth.formCreateAccount.passwordConfirm")}
                     icon={<MdLock />}
+                    {...createForm.getInputProps("confirmPassword")}
                 />
                 <Group spacing={8} className="actions" position="right">
                     <Button
