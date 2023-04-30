@@ -13,7 +13,7 @@ export function LoginDialog({
     context,
     id,
     innerProps,
-}: ContextModalProps<{}>) {
+}: ContextModalProps<{ after?: () => void }>) {
     const { t } = useTranslation();
     const { post } = useAPI();
     const { setUser } = useSession();
@@ -43,6 +43,9 @@ export function LoginDialog({
                             icon: <MdCheckCircle />,
                         });
                         context.closeModal(id);
+                        if (innerProps.after) {
+                            innerProps.after();
+                        }
                     } else {
                         notifications.show({
                             title: t("generic.error"),
@@ -78,7 +81,7 @@ export function LoginDialog({
                             modals.openContextModal({
                                 modal: "createAccount",
                                 title: t("layout.auth.formCreateAccount.title"),
-                                innerProps: {},
+                                innerProps: { after: innerProps.after },
                             });
                         }}
                     >
@@ -97,7 +100,7 @@ export function CreateAccountDialog({
     context,
     id,
     innerProps,
-}: ContextModalProps<{}>) {
+}: ContextModalProps<{ after?: () => void }>) {
     const { t } = useTranslation();
     const { post } = useAPI();
     const { setUser } = useSession();
@@ -136,6 +139,9 @@ export function CreateAccountDialog({
                             icon: <MdCheckCircle />,
                         });
                         context.closeModal(id);
+                        if (innerProps.after) {
+                            innerProps.after();
+                        }
                     } else {
                         notifications.show({
                             title: t("generic.error"),
@@ -180,7 +186,7 @@ export function CreateAccountDialog({
                             modals.openContextModal({
                                 modal: "login",
                                 title: t("layout.auth.formLogin.title"),
-                                innerProps: {},
+                                innerProps: { after: innerProps.after },
                             });
                         }}
                     >

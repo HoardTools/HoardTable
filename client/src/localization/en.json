@@ -37,5 +37,11 @@
     "generic": {
         "success": "Success!",
         "error": "Error"
+    },
+    "index": {
+        "actions": {
+            "join": "Join Game",
+            "create": "New Game"
+        }
     }
 }

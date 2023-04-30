@@ -12,6 +12,7 @@ import { LayoutComponent } from "./pages/layout";
 import { ApiProvider } from "./util/api";
 import { CreateAccountDialog, LoginDialog } from "./components/LoginDialog";
 import { SessionProvider } from "./util/session";
+import { IndexPage } from "./pages/index";
 
 i18n.use(initReactI18next).init({
     // the translations
@@ -75,7 +76,9 @@ function RouterContainer() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route index element={<LayoutComponent />}></Route>
+                <Route path="" element={<LayoutComponent />}>
+                    <Route path="" element={<IndexPage />} />
+                </Route>
             </Routes>
         </BrowserRouter>
     );
