@@ -1,4 +1,4 @@
-from starlite import Controller, get, post, Provide
+from starlite import Controller, get, post, Provide, delete
 from starlite.exceptions import *
 from starlite.datastructures import Headers
 from pydantic import BaseModel
@@ -58,6 +58,14 @@ class SessionController(Controller):
         return UserDataModel(
             id=login.id, username=login.username, profile_picture=login.profile_picture
         )
+
+    @delete(
+        "/logout",
+        guards=[guard_session],
+        dependencies={"session": Provide(depends_session)},
+    )
+    async def logout(self, session: Session) -> None:
+        session.logout()
 
 
 class UserController(Controller):

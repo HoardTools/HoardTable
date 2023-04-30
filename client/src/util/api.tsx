@@ -57,6 +57,12 @@ export class ApiAccess {
             }
         );
         if (result.status < 300 && result.status >= 200) {
+            if (result.status === 204) {
+                return {
+                    success: true,
+                    result: null as any,
+                };
+            }
             return {
                 success: true,
                 result: await result.json(),

@@ -22,6 +22,9 @@
                 "statusSuccess": "Account created!",
                 "statusFailure": "Account creation error."
             }
+        },
+        "user": {
+            "logout": "Log Out"
         }
     },
     "errors": {

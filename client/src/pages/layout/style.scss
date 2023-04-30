@@ -27,4 +27,17 @@
         right: 8px;
         transform: translate(0, -50%);
     }
+
+    .user-button {
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        transform: translate(0, -50%);
+        cursor: pointer;
+        transition: filter 0.1s;
+
+        &:hover {
+            filter: brightness(2);
+        }
+    }
 }

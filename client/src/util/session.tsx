@@ -14,7 +14,7 @@ type SessionContextType = {
     session: SessionData;
     user: UserData | null;
     setSession: (session: SessionData) => void;
-    setUser: (user: UserData) => void;
+    setUser: (user: UserData | null) => void;
 };
 const SessionContext = createContext<SessionContextType>(null as any);
 
