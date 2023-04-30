@@ -2,7 +2,22 @@
     "layout": {
         "appName": "HoardTable",
         "auth": {
-            "loginButton": "Login"
+            "loginButton": "Login",
+            "formLogin": {
+                "title": "Log In",
+                "username": "Username",
+                "password": "Password",
+                "confirm": "Login",
+                "switch": "Create Account"
+            },
+            "formCreateAccount": {
+                "title": "Create Account",
+                "username": "Username",
+                "password": "Password",
+                "passwordConfirm": "Confirm Password",
+                "confirm": "Create",
+                "switch": "Use Existing Account"
+            }
         }
     }
 }
