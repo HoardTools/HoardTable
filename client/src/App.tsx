@@ -11,6 +11,7 @@ import * as translate_en from "./localization/en.json";
 import { LayoutComponent } from "./pages/layout";
 import { ApiProvider } from "./util/api";
 import { CreateAccountDialog, LoginDialog } from "./components/LoginDialog";
+import { SessionProvider } from "./util/session";
 
 i18n.use(initReactI18next).init({
     // the translations
@@ -84,9 +85,11 @@ function App() {
     return (
         <div className="app-container">
             <ApiProvider>
-                <MantineSetup>
-                    <RouterContainer />
-                </MantineSetup>
+                <SessionProvider>
+                    <MantineSetup>
+                        <RouterContainer />
+                    </MantineSetup>
+                </SessionProvider>
             </ApiProvider>
         </div>
     );

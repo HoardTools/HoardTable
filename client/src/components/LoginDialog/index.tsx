@@ -2,10 +2,12 @@ import { ContextModalProps, modals } from "@mantine/modals";
 import { useForm } from "@mantine/form";
 import { Button, Group, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { useTranslation } from "react-i18next";
-import { MdEmail, MdLock } from "react-icons/md";
+import { MdCheckCircle, MdEmail, MdError, MdLock } from "react-icons/md";
 import "./style.scss";
 import { useAPI } from "../../util/api";
 import { UserData } from "../../types/auth";
+import { notifications } from "@mantine/notifications";
+import { useSession } from "../../util/session";
 
 export function LoginDialog({
     context,
@@ -13,6 +15,8 @@ export function LoginDialog({
     innerProps,
 }: ContextModalProps<{}>) {
     const { t } = useTranslation();
+    const { post } = useAPI();
+    const { setUser } = useSession();
     const loginForm = useForm({
         initialValues: {
             username: "",
@@ -23,7 +27,33 @@ export function LoginDialog({
     return (
         <form
             className="form form-login"
-            onSubmit={loginForm.onSubmit(console.log)}
+            onSubmit={loginForm.onSubmit((values) =>
+                post<UserData>("auth/session/login", {
+                    body: {
+                        username: values.username,
+                        password: values.password,
+                    },
+                }).then((result) => {
+                    if (result.success) {
+                        setUser(result.result);
+                        notifications.show({
+                            title: t("generic.success"),
+                            message: t("layout.auth.formLogin.statusSuccess"),
+                            color: "green",
+                            icon: <MdCheckCircle />,
+                        });
+                        context.closeModal(id);
+                    } else {
+                        notifications.show({
+                            title: t("generic.error"),
+                            message: t("layout.auth.formLogin.statusFailure"),
+                            color: "red",
+                            icon: <MdError />,
+                        });
+                        console.error(result);
+                    }
+                })
+            )}
         >
             <Stack spacing={16}>
                 <TextInput
@@ -70,6 +100,7 @@ export function CreateAccountDialog({
 }: ContextModalProps<{}>) {
     const { t } = useTranslation();
     const { post } = useAPI();
+    const { setUser } = useSession();
     const createForm = useForm({
         initialValues: {
             username: "",
@@ -94,7 +125,28 @@ export function CreateAccountDialog({
                         password: values.password,
                     },
                 }).then((result) => {
-                    console.log(result);
+                    if (result.success) {
+                        setUser(result.result);
+                        notifications.show({
+                            title: t("generic.success"),
+                            message: t(
+                                "layout.auth.formCreateAccount.statusSuccess"
+                            ),
+                            color: "green",
+                            icon: <MdCheckCircle />,
+                        });
+                        context.closeModal(id);
+                    } else {
+                        notifications.show({
+                            title: t("generic.error"),
+                            message: t(
+                                "layout.auth.formCreateAccount.statusFailure"
+                            ),
+                            color: "red",
+                            icon: <MdError />,
+                        });
+                        console.error(result);
+                    }
                 })
             )}
         >

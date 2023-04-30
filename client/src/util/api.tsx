@@ -1,5 +1,4 @@
 import { ReactNode, createContext, useContext, useMemo } from "react";
-import { SessionData } from "../types/auth";
 
 const ApiContext = createContext<ApiAccess>(null as unknown as ApiAccess);
 
@@ -19,18 +18,7 @@ type URLParamsType = {
 };
 
 export class ApiAccess {
-    private authToken: string | null;
     constructor() {
-        this.authToken = localStorage.getItem("token");
-        this.get<SessionData>("auth/session").then((result) => {
-            if (result.success) {
-                this.authToken = result.result.id;
-                if (localStorage.getItem("token") !== this.authToken) {
-                    localStorage.setItem("token", this.authToken);
-                }
-            }
-        });
-
         this.request = this.request.bind(this);
         this.get = this.get.bind(this);
         this.post = this.post.bind(this);
@@ -59,9 +47,11 @@ export class ApiAccess {
                     options && options.body
                         ? JSON.stringify(options.body)
                         : undefined,
-                headers: this.authToken
+                headers: window.localStorage.getItem("token")
                     ? {
-                          Authorization: this.authToken,
+                          Authorization: window.localStorage.getItem(
+                              "token"
+                          ) as string,
                       }
                     : undefined,
             }

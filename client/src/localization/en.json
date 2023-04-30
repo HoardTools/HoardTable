@@ -8,7 +8,9 @@
                 "username": "Username",
                 "password": "Password",
                 "confirm": "Login",
-                "switch": "Create Account"
+                "switch": "Create Account",
+                "statusSuccess": "Logged in!",
+                "statusFailure": "Username/Password incorrect"
             },
             "formCreateAccount": {
                 "title": "Create Account",
@@ -16,7 +18,9 @@
                 "password": "Password",
                 "passwordConfirm": "Confirm Password",
                 "confirm": "Create",
-                "switch": "Use Existing Account"
+                "switch": "Use Existing Account",
+                "statusSuccess": "Account created!",
+                "statusFailure": "Account creation error."
             }
         }
     },
@@ -26,5 +30,9 @@
                 "passwordMatch": "Passwords must match."
             }
         }
+    },
+    "generic": {
+        "success": "Success!",
+        "error": "Error"
     }
 }

@@ -44,6 +44,21 @@ class SessionController(Controller):
             id=session.id, logged_in=bool(session.user_id), expires=session.expires
         )
 
+    @post(
+        "/login",
+        guards=[guard_session],
+        dependencies={"session": Provide(depends_session)},
+    )
+    async def login(
+        self, session: Session, app_state: ApplicationState, data: UserRequestModel
+    ) -> UserDataModel:
+        login = session.login(data.username, data.password)
+        if login == None:
+            raise NotFoundException(detail="Incorrect username/password")
+        return UserDataModel(
+            id=login.id, username=login.username, profile_picture=login.profile_picture
+        )
+
 
 class UserController(Controller):
     path = "/auth/user"
@@ -67,3 +82,12 @@ class UserController(Controller):
             username=new_user.username,
             profile_picture=new_user.profile_picture,
         )
+
+    @get("")
+    async def get_user(self, session: Session) -> UserDataModel:
+        if session.user_id:
+            user: User = session.user
+            return UserDataModel(
+                id=user.id, username=user.username, profile_picture=user.profile_picture
+            )
+        raise MethodNotAllowedException(detail="Not logged in")
