@@ -13,6 +13,7 @@ import { ApiProvider } from "./util/api";
 import { CreateAccountDialog, LoginDialog } from "./components/LoginDialog";
 import { SessionProvider } from "./util/session";
 import { IndexPage } from "./pages/index";
+import { UserSettingsDialog } from "./components/UserDialog";
 
 i18n.use(initReactI18next).init({
     // the translations
@@ -63,6 +64,7 @@ function MantineSetup(props: {
                 modals={{
                     login: LoginDialog,
                     createAccount: CreateAccountDialog,
+                    userEditor: UserSettingsDialog,
                 }}
             >
                 <Notifications />

@@ -24,7 +24,12 @@
             }
         },
         "user": {
-            "logout": "Log Out"
+            "logout": "Log Out",
+            "settings": "User Settings",
+            "editor": {
+                "title": "User Settings",
+                "username": "Username"
+            }
         }
     },
     "errors": {

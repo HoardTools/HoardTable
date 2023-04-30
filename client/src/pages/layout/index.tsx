@@ -2,7 +2,7 @@ import { Avatar, Button, Header, Loader, Menu, Title } from "@mantine/core";
 import LogoSvg from "../../assets/icon.svg";
 import "./style.scss";
 import { useTranslation } from "react-i18next";
-import { MdLogin, MdLogout } from "react-icons/md";
+import { MdLogin, MdLogout, MdSettings } from "react-icons/md";
 import { modals } from "@mantine/modals";
 import { useSession } from "../../util/session";
 import { useAPI } from "../../util/api";
@@ -39,6 +39,20 @@ export function LayoutComponent() {
                                 )}
                             </Menu.Target>
                             <Menu.Dropdown>
+                                <Menu.Item
+                                    icon={<MdSettings size={16} />}
+                                    onClick={() =>
+                                        modals.openContextModal({
+                                            modal: "userEditor",
+                                            title: t(
+                                                "layout.user.editor.title"
+                                            ),
+                                            innerProps: {},
+                                        })
+                                    }
+                                >
+                                    {t("layout.user.settings")}
+                                </Menu.Item>
                                 <Menu.Item
                                     icon={<MdLogout size={16} />}
                                     onClick={() =>
