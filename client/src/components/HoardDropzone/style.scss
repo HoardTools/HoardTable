@@ -1,0 +1,46 @@
+.hoard-dropzone {
+    max-height: 256px;
+    height: fit-content;
+    position: relative;
+
+    .preview-scroller {
+        width: 100%;
+        display: inline-block;
+        height: fit-content;
+        overflow-x: auto;
+        user-select: all;
+        pointer-events: all;
+
+        .preview-container {
+            z-index: 100000;
+            white-space: nowrap;
+            width: fit-content;
+            flex-wrap: nowrap;
+
+            .prev-img-wrapper {
+                display: inline-block;
+                width: fit-content;
+                height: fit-content;
+                border-radius: 4px;
+                overflow: hidden;
+                position: relative;
+
+                &:hover .delete-btn {
+                    top: 8px;
+                }
+
+                .delete-btn {
+                    position: absolute;
+                    top: -30px;
+                    right: 8px;
+                    transition: top 0.1s;
+                }
+
+                .prev-img {
+                    height: 128px;
+                    width: auto;
+                }
+            }
+        }
+    }
+}

@@ -14,6 +14,7 @@ import { CreateAccountDialog, LoginDialog } from "./components/LoginDialog";
 import { SessionProvider } from "./util/session";
 import { IndexPage } from "./pages/index";
 import { UserSettingsDialog } from "./components/UserDialog";
+import { Playground } from "./pages/playground/Playground";
 
 i18n.use(initReactI18next).init({
     // the translations
@@ -80,6 +81,7 @@ function RouterContainer() {
             <Routes>
                 <Route path="" element={<LayoutComponent />}>
                     <Route path="" element={<IndexPage />} />
+                    <Route path="/playground" element={<Playground />} />
                 </Route>
             </Routes>
         </BrowserRouter>
