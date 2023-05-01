@@ -28,7 +28,9 @@
             "settings": "User Settings",
             "editor": {
                 "title": "User Settings",
-                "username": "Username"
+                "username": "Username",
+                "profile": "Profile Picture",
+                "failure": "Failed to update account settings"
             }
         }
     },
@@ -41,7 +43,9 @@
     },
     "generic": {
         "success": "Success!",
-        "error": "Error"
+        "error": "Error",
+        "cancel": "Cancel",
+        "submit": "Submit"
     },
     "index": {
         "actions": {

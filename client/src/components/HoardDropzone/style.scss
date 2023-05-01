@@ -12,10 +12,11 @@
         pointer-events: all;
 
         .preview-container {
-            z-index: 100000;
             white-space: nowrap;
             width: fit-content;
             flex-wrap: nowrap;
+            margin-left: auto;
+            margin-right: auto;
 
             .prev-img-wrapper {
                 display: inline-block;
@@ -43,4 +44,9 @@
             }
         }
     }
+}
+
+.hoard-dropzone-wrapper .label {
+    font-weight: 500;
+    font-size: 0.875rem;
 }

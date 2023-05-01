@@ -1,9 +1,9 @@
-from starlite import Controller, get, post, Provide, delete
+from starlite import Controller, get, post, Provide, delete, put
 from starlite.exceptions import *
 from starlite.datastructures import Headers
 from pydantic import BaseModel
 from models import ApplicationState, Session, User
-from util import guard_session, depends_session
+from util import guard_session, depends_session, guard_logged_in, depends_user
 from typing import Union
 
 
@@ -22,6 +22,11 @@ class UserDataModel(BaseModel):
 class UserRequestModel(BaseModel):
     username: str
     password: str
+
+
+class UserSettingsModel(BaseModel):
+    username: str
+    profile: Union[str, None]
 
 
 class SessionController(Controller):
@@ -91,7 +96,7 @@ class UserController(Controller):
             profile_picture=new_user.profile_picture,
         )
 
-    @get("")
+    @get("", guards=[guard_logged_in])
     async def get_user(self, session: Session) -> UserDataModel:
         if session.user_id:
             user: User = session.user
@@ -99,3 +104,23 @@ class UserController(Controller):
                 id=user.id, username=user.username, profile_picture=user.profile_picture
             )
         raise MethodNotAllowedException(detail="Not logged in")
+
+    @put(
+        "/settings",
+        guards=[guard_logged_in],
+        dependencies={"user": Provide(depends_user)},
+    )
+    async def modify_user(
+        self, user: User, data: UserSettingsModel, app_state: ApplicationState
+    ) -> UserDataModel:
+        existence_check: list[User] = User.load_query(
+            app_state.database, {"username": user.username}
+        )
+        if len(existence_check) > 0 and existence_check[0].id != user.id:
+            raise MethodNotAllowedException(detail="Username in use")
+        user.username = data.username
+        user.profile_picture = data.profile
+        user.save()
+        return UserDataModel(
+            id=user.id, username=user.username, profile_picture=user.profile_picture
+        )

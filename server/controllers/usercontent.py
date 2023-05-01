@@ -5,9 +5,8 @@ from util import guard_session
 
 class UserContentController(Controller):
     path = "/content"
-    guards = [guard_session]
 
-    @post("")
+    @post("", guards=[guard_session])
     async def add_content(
         self, app_state: ApplicationState, data: ContentCreateModel
     ) -> ContentMetadata:
@@ -23,7 +22,7 @@ class UserContentController(Controller):
             raise NotFoundException(detail=f"Content {content} does not exist")
         return File(path=loaded.filename, filename=loaded.id + loaded.ext)
 
-    @get("/{content:str}/meta")
+    @get("/{content:str}/meta", guards=[guard_session])
     async def get_content_meta(
         self, app_state: ApplicationState, content: str
     ) -> ContentMetadata:

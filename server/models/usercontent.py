@@ -87,5 +87,5 @@ class UserContent(ORM):
             name=self.name,
             mime_type=self.mime,
             size=self.size,
-            url=f"content/{self.id}",
+            url=f"api/content/{self.id}",
         )

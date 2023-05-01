@@ -5,7 +5,9 @@ import { MdDelete, MdError, MdPhoto, MdUploadFile } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { readFileAsBase64 } from "../../util/asyncReader";
 import "./style.scss";
-import { unset } from "lodash";
+import { isEqual, unset } from "lodash";
+import { ApiAccess } from "../../util/api";
+import { ContentMetadata } from "../../types/content";
 
 export type SerialFile = {
     name: string;
@@ -29,86 +31,131 @@ async function readAllFiles(
 }
 
 export function HoardDropzone(props: {
+    label?: string;
     preview?: boolean;
     accept?: string[];
     maxFiles?: number;
     maxSize?: number;
     disabled?: boolean;
     onChange?: (files: { [key: string]: SerialFile }) => void;
+    files?: { [key: string]: SerialFile };
 }) {
-    const [files, setFiles] = useState<{ [key: string]: SerialFile }>({});
+    const [files, setFiles] = useState<{ [key: string]: SerialFile }>(
+        props.files ?? {}
+    );
     const { t } = useTranslation();
 
     useEffect(() => {
-        props.onChange && props.onChange(files);
+        if (!isEqual(files, props.files)) {
+            props.onChange && props.onChange(files);
+        }
     }, [files]);
 
-    return (
-        <Dropzone
-            maxFiles={props.maxFiles}
-            className="hoard-dropzone"
-            maxSize={props.maxSize}
-            accept={props.accept ?? ["image/*"]}
-            disabled={props.disabled}
-            onDrop={(files) => readAllFiles(files).then(setFiles)}
-        >
-            <Stack spacing={"md"} style={{ height: "100%" }}>
-                <Group
-                    position="center"
-                    spacing="xl"
-                    style={{ pointerEvents: "none" }}
-                >
-                    <Dropzone.Accept>
-                        <MdUploadFile size={32} />
-                    </Dropzone.Accept>
-                    <Dropzone.Reject>
-                        <MdError size={32} />
-                    </Dropzone.Reject>
-                    <Dropzone.Idle>
-                        <MdPhoto size={32} />
-                    </Dropzone.Idle>
+    useEffect(() => {
+        if (props.files) {
+            setFiles(props.files);
+        }
+    }, [props.files]);
 
-                    <div>
-                        <Text size="xl" inline>
-                            {t("components.dropzone.title")}
-                        </Text>
-                    </div>
-                </Group>
-                {props.preview && Object.keys(files).length > 0 && (
-                    <div className="preview-scroller">
-                        <Group
-                            spacing={"md"}
-                            position="center"
-                            className="preview-container"
-                        >
-                            {Object.values(files).map((v, i) => (
-                                <div className="prev-img-wrapper" key={i}>
-                                    <ActionIcon
-                                        radius={"xl"}
-                                        variant="filled"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            unset(files, v.name);
-                                            setFiles({ ...files });
-                                        }}
-                                        className="delete-btn"
-                                        color="red"
-                                    >
-                                        <MdDelete />
-                                    </ActionIcon>
-                                    <img
-                                        alt=""
-                                        className="prev-img"
-                                        src={`data:${v.mimeType};base64,${v.data
-                                            .replaceAll("-", "+")
-                                            .replaceAll("_", "/")}`}
-                                    />
-                                </div>
-                            ))}
-                        </Group>
-                    </div>
-                )}
-            </Stack>
-        </Dropzone>
+    return (
+        <Stack spacing={2} className="hoard-dropzone-wrapper">
+            {props.label && <Text className="label">{props.label}</Text>}
+            <Dropzone
+                maxFiles={props.maxFiles}
+                multiple={props.maxFiles ? props.maxFiles > 1 : true}
+                className="hoard-dropzone"
+                maxSize={props.maxSize}
+                accept={props.accept ?? ["image/*"]}
+                disabled={props.disabled}
+                onDrop={(files) => readAllFiles(files).then(setFiles)}
+            >
+                <Stack spacing={"md"} style={{ height: "100%" }}>
+                    <Group
+                        position="center"
+                        spacing="xl"
+                        style={{ pointerEvents: "none" }}
+                    >
+                        <Dropzone.Accept>
+                            <MdUploadFile size={32} />
+                        </Dropzone.Accept>
+                        <Dropzone.Reject>
+                            <MdError size={32} />
+                        </Dropzone.Reject>
+                        <Dropzone.Idle>
+                            <MdPhoto size={32} />
+                        </Dropzone.Idle>
+
+                        <div>
+                            <Text size="xl" inline>
+                                {t("components.dropzone.title")}
+                            </Text>
+                        </div>
+                    </Group>
+                    {props.preview && Object.keys(files).length > 0 && (
+                        <div className="preview-scroller">
+                            <Group
+                                spacing={"md"}
+                                position="center"
+                                className="preview-container"
+                            >
+                                {Object.values(files).map((v, i) => (
+                                    <div className="prev-img-wrapper" key={i}>
+                                        <ActionIcon
+                                            radius={"xl"}
+                                            variant="filled"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                unset(files, v.name);
+                                                setFiles({ ...files });
+                                            }}
+                                            className="delete-btn"
+                                            color="red"
+                                        >
+                                            <MdDelete />
+                                        </ActionIcon>
+                                        <img
+                                            alt=""
+                                            className="prev-img"
+                                            src={
+                                                v.mimeType === "usercontent"
+                                                    ? v.data
+                                                    : `data:${
+                                                          v.mimeType
+                                                      };base64,${v.data
+                                                          .replaceAll("-", "+")
+                                                          .replaceAll(
+                                                              "_",
+                                                              "/"
+                                                          )}`
+                                            }
+                                        />
+                                    </div>
+                                ))}
+                            </Group>
+                        </div>
+                    )}
+                </Stack>
+            </Dropzone>
+        </Stack>
     );
+}
+
+export async function submitUserContent(
+    file: SerialFile,
+    reference: { collection: string; resource: string }
+): Promise<string | null> {
+    const { post } = new ApiAccess();
+    const result = await post<ContentMetadata>("content", {
+        body: {
+            filename: file.name,
+            mime_type: file.mimeType,
+            data: file.data,
+            reference,
+        },
+    });
+    if (result.success) {
+        return result.result.url;
+    } else {
+        return null;
+    }
 }

@@ -11,3 +11,14 @@ def guard_session(connection: ASGIConnection, _: BaseRouteHandler) -> None:
         raise NotAuthorizedException(detail="Valid session token required")
     if session.expired:
         raise NotAuthorizedException(detail="Valid session token required")
+
+
+def guard_logged_in(connection: ASGIConnection, _: BaseRouteHandler) -> None:
+    try:
+        session: Session = Session.load_id(
+            connection.app.state.database, connection.headers.get("authorization", "")
+        )
+        if not session.user_id:
+            raise NotAuthorizedException(detail="Must be logged in")
+    except:
+        raise NotAuthorizedException(detail="Must be logged in")
