@@ -2,7 +2,7 @@ from starlite import Controller, get, post, Provide, delete, put
 from starlite.exceptions import *
 from starlite.datastructures import Headers
 from pydantic import BaseModel
-from models import ApplicationState, Session, User
+from models import ApplicationState, Session, User, UserContent
 from util import guard_session, depends_session, guard_logged_in, depends_user
 from typing import Union
 
@@ -117,7 +117,20 @@ class UserController(Controller):
             app_state.database, {"username": user.username}
         )
         if len(existence_check) > 0 and existence_check[0].id != user.id:
+            temp: UserContent = UserContent.load_id(
+                app_state.database, data.profile.split("/")[2]
+            )
+            if temp:
+                temp.destroy()
             raise MethodNotAllowedException(detail="Username in use")
+
+        if data.profile != user.profile_picture and user.profile_picture:
+            prev_profile: UserContent = UserContent.load_id(
+                app_state.database, user.profile_picture.split("/")[2]
+            )
+            if prev_profile:
+                prev_profile.destroy()
+
         user.username = data.username
         user.profile_picture = data.profile
         user.save()
