@@ -2,13 +2,9 @@ from .orm import ORM
 from pymongo.database import Database
 from typing import Union
 from time import time
-from hashlib import pbkdf2_hmac as hmac
-import os
+from security import password_gen
 
 SESSION_EXPIRE = 3600 * 96
-
-SALT = os.environ.get("CRYPT_SALT", "ough salty").encode("utf-8")
-ITER = int(os.environ.get("CRYPT_ITERATIONS", "500000"))
 
 
 class Session(ORM):
@@ -82,11 +78,8 @@ class User(ORM):
         return cls(
             db=db,
             username=username,
-            password_hash=hmac("sha256", password.encode("utf-8"), SALT, ITER).hex(),
+            password_hash=password_gen(password),
         )
 
     def verify(self, password: str):
-        return (
-            hmac("sha256", password.encode("utf-8"), SALT, ITER).hex()
-            == self.password_hash
-        )
+        return password_gen(password) == self.password_hash
