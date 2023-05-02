@@ -1,6 +1,6 @@
 from pymongo.database import Database
 from .orm import ORM
-from typing import Literal, TypedDict
+from typing import Literal, Union
 from security import password_gen
 from secrets import token_urlsafe
 from pydantic import BaseModel
@@ -80,6 +80,13 @@ class GameInvite(ORM):
         return GameInvite(id=token_urlsafe(8), db=db, game_id=game)
 
 
+class SparseGame(BaseModel):
+    id: str
+    name: str
+    owner: str
+    image: Union[str, None]
+
+
 class Game(ORM):
     object_type = "game"
     collection_name = "games"
@@ -113,4 +120,10 @@ class Game(ORM):
             name=name,
             owner=owner,
             password_hash=password_gen(password) if password else None,
+        )
+
+    @property
+    def sparse(self) -> SparseGame:
+        return SparseGame(
+            id=self.id, name=self.name, owner=self.owner, image=self.image
         )
