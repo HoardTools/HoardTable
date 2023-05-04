@@ -39,18 +39,30 @@
             "createAccount": {
                 "passwordMatch": "Passwords must match."
             }
+        },
+        "input": {
+            "fillField": "Please fill out field: {{field}}"
         }
     },
     "generic": {
         "success": "Success!",
         "error": "Error",
         "cancel": "Cancel",
-        "submit": "Submit"
+        "submit": "Submit",
+        "optional": "Optional"
     },
     "index": {
         "actions": {
             "join": "Join Game",
             "create": "New Game"
+        },
+        "createDialog": {
+            "name": "Game Name",
+            "password": "Game Password",
+            "image": "Main Image (Optional)",
+            "title": "New Game",
+            "success": "Game created with name {{name}}",
+            "failure": "Game creation failed."
         }
     },
     "components": {

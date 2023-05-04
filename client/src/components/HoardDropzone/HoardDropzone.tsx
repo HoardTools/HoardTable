@@ -15,6 +15,13 @@ export type SerialFile = {
     data: string;
 };
 
+export type ContentCreate = {
+    filename: string;
+    mime_type: string;
+    data: string;
+    reference: { collection: string; resource: string };
+};
+
 async function readAllFiles(
     files: File[]
 ): Promise<{ [key: string]: SerialFile }> {
@@ -105,8 +112,9 @@ export function HoardDropzone(props: {
                                             variant="filled"
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                unset(files, v.name);
-                                                setFiles({ ...files });
+                                                const newFiles = { ...files };
+                                                unset(newFiles, v.name);
+                                                setFiles(newFiles);
                                             }}
                                             className="delete-btn"
                                             color="red"
@@ -158,4 +166,16 @@ export async function submitUserContent(
     } else {
         return null;
     }
+}
+
+export function getContentModel(
+    file: SerialFile,
+    reference: { collection: string; resource: string }
+): ContentCreate {
+    return {
+        filename: file.name,
+        mime_type: file.mimeType,
+        data: file.data,
+        reference,
+    };
 }

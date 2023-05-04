@@ -15,6 +15,7 @@ import { SessionProvider } from "./util/session";
 import { IndexPage } from "./pages/index";
 import { UserSettingsDialog } from "./components/UserDialog";
 import { Playground } from "./pages/playground/Playground";
+import { GameCreateDialog } from "./components/GameCreateDialog";
 
 i18n.use(initReactI18next).init({
     // the translations
@@ -66,6 +67,7 @@ function MantineSetup(props: {
                     login: LoginDialog,
                     createAccount: CreateAccountDialog,
                     userEditor: UserSettingsDialog,
+                    createGame: GameCreateDialog,
                 }}
             >
                 <Notifications />
