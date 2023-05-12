@@ -1,4 +1,4 @@
-import { ContextModalProps, modals } from "@mantine/modals";
+import { ContextModalProps } from "@mantine/modals";
 import { useAPI } from "../../util/api";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
