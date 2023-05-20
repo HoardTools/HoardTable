@@ -6,10 +6,22 @@
     width: 75%;
     height: fit-content;
     transform: translate(-50%, -50%);
+    .index-actions {
+        .action-btns {
+            .button {
+                width: 25%;
+            }
+        }
 
-    .action-btns {
-        .button {
-            width: 25%;
+        .game-list {
+            .game-card {
+                .game-image {
+                    height: 128px;
+                    width: auto;
+                    user-select: none;
+                    pointer-events: none;
+                }
+            }
         }
     }
 }

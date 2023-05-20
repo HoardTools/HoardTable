@@ -63,6 +63,12 @@
             "title": "New Game",
             "success": "Game created with name {{name}}",
             "failure": "Game creation failed."
+        },
+        "cards": {
+            "badge": {
+                "player": "Player",
+                "owner": "Owner"
+            }
         }
     },
     "components": {

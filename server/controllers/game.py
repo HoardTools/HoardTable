@@ -44,3 +44,12 @@ class GameController(Controller):
             ).metadata.url
         new_game.save()
         return new_game.sparse
+
+    @get(
+        "/owned", guards=[guard_logged_in], dependencies={"user": Provide(depends_user)}
+    )
+    async def get_owned_games(
+        self, app_state: ApplicationState, user: User
+    ) -> list[SparseGame]:
+        all_games: list[Game] = Game.load_query(app_state.database, {"owner": user.id})
+        return [i.sparse for i in all_games]
