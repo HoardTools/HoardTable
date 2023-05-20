@@ -10,8 +10,7 @@ GAME_RESOURCES = Literal["map", "document", "token"]
 
 class SerializedPlayer(BaseModel):
     id: str
-    name: str
-    owner: str
+    owner_id: str
     owner_type: Literal["user", "session"]
 
 
@@ -26,14 +25,12 @@ class Player(ORM):
         key: str = None,
         owner_type: Literal["user", "session"] = "user",
         owner_id: str = None,
-        name: str = None,
         **kwargs
     ) -> None:
         super().__init__(id, db, **kwargs)
         self.key = key
         self.owner_type = owner_type
         self.owner_id = owner_id
-        self.name = name
 
     @classmethod
     def create(
@@ -41,7 +38,6 @@ class Player(ORM):
         db: Database,
         owner_type: Literal["user", "session"],
         owner_id: str,
-        name: str,
     ) -> tuple["Player", str]:
         raw_key = token_urlsafe(32)
         return (
@@ -50,7 +46,6 @@ class Player(ORM):
                 key=password_gen(raw_key),
                 owner_type=owner_type,
                 owner_id=owner_id,
-                name=name,
             ),
             raw_key,
         )
@@ -61,7 +56,7 @@ class Player(ORM):
     @property
     def data(self):
         return SerializedPlayer(
-            id=self.id, name=self.name, owner=self.owner_id, owner_type=self.owner_type
+            id=self.id, owner=self.owner_id, owner_type=self.owner_type
         )
 
 
