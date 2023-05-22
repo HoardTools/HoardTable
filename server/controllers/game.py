@@ -1,4 +1,5 @@
-from starlite import Controller, post, get, Provide, NotFoundException, NotAuthorizedException
+from starlite import Controller, post, get, Provide
+from starlite.exceptions import MethodNotAllowedException, NotFoundException, NotAuthorizedException
 from util import depends_session, depends_user, guard_logged_in, guard_session
 from models import (
     Game,
@@ -10,10 +11,11 @@ from models import (
     SparseGame,
     ContentCreateModel,
     UserContent,
-    SerializedPlayer
+    SerializedPlayer,
+    InviteModel
 )
 from pydantic import BaseModel
-from typing import Optional, Literal
+from typing import Optional, Literal, Union
 
 
 class GameCreateModel(BaseModel):
@@ -90,5 +92,41 @@ class PlayerController(Controller):
             loaded.save()
 
         return loaded.data
+    
+class InviteActivationModel(BaseModel):
+    max_uses: Union[None, int]
+    expiration: Union[None, float]
+
+class InviteController(Controller):
+    path = "/invites"
+    guards = [guard_logged_in]
+    dependencies = {"user": Provide(depends_user)}
+
+    @post("/create/{game_id:str}")
+    async def create_invite(self, app_state: ApplicationState, user: User, game_id: str) -> str:
+        game: Game = Game.load_id(app_state.database, game_id)
+        if game == None:
+            raise NotFoundException("Game not found")
+        if game.owner != user.id:
+            raise NotAuthorizedException("Game not owned by user")
+        new_invite: GameInvite = GameInvite.create(app_state.database, game_id)
+        new_invite.save()
+        return new_invite.id
+    
+    @post("/activate/{game_id:str}/{invite_id:str}")
+    async def activate_invite(self, app_state: ApplicationState, user: User, game_id: str, invite_id: str, data: InviteActivationModel) -> InviteModel:
+        game: Game = Game.load_id(app_state.database, game_id)
+        invite: GameInvite = GameInvite.load_id(app_state.database, invite_id)
+        if game == None or invite == None:
+            raise NotFoundException("Invite not found")
+        if invite.active or invite.game_id != game.id:
+            raise MethodNotAllowedException("Invalid invite")
+        if game.owner != user.id:
+            raise NotAuthorizedException("Game not owned by user")
+        invite.remaining_uses = data.max_uses
+        invite.valid_until = data.expiration
+        invite.activate()
+        return invite.data
+
 
 

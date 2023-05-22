@@ -63,10 +63,18 @@ export class ApiAccess {
                     result: null as any,
                 };
             }
-            return {
-                success: true,
-                result: await result.json(),
-            };
+            try {
+                return {
+                    success: true,
+                    result: await result.json(),
+                };
+            } catch (e) {
+                return {
+                    success: true,
+                    result: (await result.text()) as any,
+                };
+            }
+            
         } else {
             return {
                 success: false,

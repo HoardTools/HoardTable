@@ -22,7 +22,7 @@ def provide_app_state(state: State) -> ApplicationState:
 
 
 app = Starlite(
-    [SessionController, UserController, UserContentController, GameController],
+    [SessionController, UserController, UserContentController, GameController, PlayerController, InviteController],
     on_startup=[on_start],
     dependencies={"app_state": Provide(provide_app_state)},
 )

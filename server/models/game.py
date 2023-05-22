@@ -4,6 +4,7 @@ from typing import Literal, Union
 from security import password_gen
 from secrets import token_urlsafe
 from pydantic import BaseModel
+import time
 
 GAME_RESOURCES = Literal["map", "document", "token"]
 
@@ -60,19 +61,71 @@ class Player(ORM):
         )
 
 
+class InviteModel(BaseModel):
+    id: str
+    game_id: str
+    remaining_uses: Union[int, None] = None
+    valid_until: Union[float, None] = None
+
+
 class GameInvite(ORM):
     object_type = "game_invite"
     collection_name = "invites"
 
     def __init__(
-        self, id: str = None, db: Database = None, game_id: str = None, **kwargs
+        self,
+        id: str = None,
+        db: Database = None,
+        game_id: str = None,
+        active: bool = False,
+        remaining_uses: int = None,
+        valid_until: float = None,
+        **kwargs
     ) -> None:
         super().__init__(id, db, **kwargs)
         self.game_id = game_id
+        self.active = active
+        self.remaining_uses = remaining_uses
+        self.valid_until = valid_until
 
     @classmethod
-    def create(cls, db: Database, game: str) -> "GameInvite":
-        return GameInvite(id=token_urlsafe(8), db=db, game_id=game)
+    def create(
+        cls, db: Database, game: str, uses: int = None, expires: float = None
+    ) -> "GameInvite":
+        return GameInvite(
+            id=token_urlsafe(8),
+            db=db,
+            game_id=game,
+            remaining_uses=uses,
+            valid_until=expires,
+        )
+
+    def activate(self):
+        self.active = True
+        self.save()
+
+    def verify(self) -> bool:
+        if not self.active:
+            return False
+        if self.remaining_uses != None and self.remaining_uses < 0:
+            self.destroy()
+            return False
+        if self.valid_until != None and self.valid_until < time.time():
+            self.destroy()
+            return False
+
+        if self.remaining_uses != None:
+            self.remaining_uses -= 1
+        return True
+
+    @property
+    def data(self) -> InviteModel:
+        return InviteModel(
+            id=self.id,
+            game_id=self.game_id,
+            remaining_uses=self.remaining_uses,
+            valid_until=self.valid_until,
+        )
 
 
 class SparseGame(BaseModel):
@@ -82,6 +135,7 @@ class SparseGame(BaseModel):
     image: Union[str, None]
     resources: int
     players: int
+
 
 class FullGame(BaseModel):
     id: str
@@ -130,11 +184,21 @@ class Game(ORM):
     @property
     def sparse(self) -> SparseGame:
         return SparseGame(
-            id=self.id, name=self.name, owner=self.owner, image=self.image, resources=len(self.resources.keys()), players=len(self.players)
+            id=self.id,
+            name=self.name,
+            owner=self.owner,
+            image=self.image,
+            resources=len(self.resources.keys()),
+            players=len(self.players),
         )
-    
+
     @property
     def full(self) -> FullGame:
         return FullGame(
-            id=self.id, name=self.name, owner=self.owner, image=self.image, resources=self.resources, players=self.players
+            id=self.id,
+            name=self.name,
+            owner=self.owner,
+            image=self.image,
+            resources=self.resources,
+            players=self.players,
         )
