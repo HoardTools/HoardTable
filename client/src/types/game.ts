@@ -9,6 +9,8 @@ export type SparseGame = {
     name: string;
     owner: string;
     image: string | null;
+    resources: number;
+    players: number;
 };
 
 export type Player = {

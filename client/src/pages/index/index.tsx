@@ -1,4 +1,15 @@
-import { Button, Card, Group, Stack, Text, Badge, Paper } from "@mantine/core";
+import {
+    Button,
+    Card,
+    Group,
+    Stack,
+    Text,
+    Badge,
+    Paper,
+    Avatar,
+    ActionIcon,
+    Tooltip,
+} from "@mantine/core";
 import { useAPI } from "../../util/api";
 import { useSession } from "../../util/session";
 import "./style.scss";
@@ -7,6 +18,13 @@ import { modals } from "@mantine/modals";
 import { TFunction } from "i18next";
 import { SparseGame } from "../../types/game";
 import { useMemo, useState } from "react";
+import {
+    MdDelete,
+    MdImage,
+    MdLink,
+    MdOpenInNew,
+    MdPerson,
+} from "react-icons/md";
 
 function openCreate(
     t: TFunction<"translation", undefined, "translation">,
@@ -34,14 +52,67 @@ function GameCard(props: SparseGame) {
                     />
                 </Group>
             </Card.Section>
-            <Group position="apart" className="game-header">
-                <Text weight={500}>{props.name}</Text>
-                {props.owner === (user && user.id) ? (
-                    <Badge color="yellow">{t("index.cards.badge.owner")}</Badge>
-                ) : (
-                    <Badge color="gray">{t("index.cards.badge.player")}</Badge>
-                )}
-            </Group>
+            <Stack spacing={"md"}>
+                <Group position="apart" className="game-header">
+                    <Text weight={500}>{props.name}</Text>
+                    {props.owner === (user && user.id) ? (
+                        <Badge color="yellow">
+                            {t("index.cards.badge.owner")}
+                        </Badge>
+                    ) : (
+                        <Badge color="gray">
+                            {t("index.cards.badge.player")}
+                        </Badge>
+                    )}
+                </Group>
+                <Group position="apart" className="game-stats">
+                    <Badge
+                        pl={0}
+                        leftSection={
+                            <Avatar radius={"xl"} size={24}>
+                                <MdPerson size={14} />
+                            </Avatar>
+                        }
+                    >
+                        {props.players + " " + t("index.cards.stats.players")}
+                    </Badge>
+                    <Badge
+                        pl={0}
+                        leftSection={
+                            <Avatar radius={"xl"} size={24}>
+                                <MdImage size={14} />
+                            </Avatar>
+                        }
+                    >
+                        {props.resources +
+                            " " +
+                            t("index.cards.stats.resources")}
+                    </Badge>
+                </Group>
+                <Group spacing={"md"} position="right" className="game-actions">
+                    <Tooltip label={t("index.cards.actions.open")} color="dark">
+                        <ActionIcon variant="light">
+                            <MdOpenInNew />
+                        </ActionIcon>
+                    </Tooltip>
+                    <Tooltip
+                        label={t("index.cards.actions.delete")}
+                        color="dark"
+                    >
+                        <ActionIcon variant="light">
+                            <MdDelete />
+                        </ActionIcon>
+                    </Tooltip>
+                    <Tooltip
+                        label={t("index.cards.actions.invite")}
+                        color="dark"
+                    >
+                        <ActionIcon variant="light">
+                            <MdLink />
+                        </ActionIcon>
+                    </Tooltip>
+                </Group>
+            </Stack>
         </Card>
     );
 }

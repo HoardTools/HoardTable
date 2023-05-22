@@ -15,11 +15,13 @@
 
         .game-list {
             .game-card {
+                width: 20%;
                 .game-image {
                     height: 128px;
                     width: auto;
                     user-select: none;
                     pointer-events: none;
+                    border-radius: 4px;
                 }
             }
         }

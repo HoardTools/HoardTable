@@ -68,6 +68,15 @@
             "badge": {
                 "player": "Player",
                 "owner": "Owner"
+            },
+            "stats": {
+                "players": "Players",
+                "resources": "Items"
+            },
+            "actions": {
+                "open": "Open Game",
+                "delete": "Delete Game",
+                "invite": "Get Invite"
             }
         }
     },

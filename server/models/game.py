@@ -80,6 +80,16 @@ class SparseGame(BaseModel):
     name: str
     owner: str
     image: Union[str, None]
+    resources: int
+    players: int
+
+class FullGame(BaseModel):
+    id: str
+    name: str
+    owner: str
+    image: Union[str, None]
+    resources: dict[str, GAME_RESOURCES]
+    players: list[str]
 
 
 class Game(ORM):
@@ -120,5 +130,11 @@ class Game(ORM):
     @property
     def sparse(self) -> SparseGame:
         return SparseGame(
-            id=self.id, name=self.name, owner=self.owner, image=self.image
+            id=self.id, name=self.name, owner=self.owner, image=self.image, resources=len(self.resources.keys()), players=len(self.players)
+        )
+    
+    @property
+    def full(self) -> FullGame:
+        return FullGame(
+            id=self.id, name=self.name, owner=self.owner, image=self.image, resources=self.resources, players=self.players
         )
